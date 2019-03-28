@@ -10,6 +10,7 @@ use App\Repository\PropertyRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 
 
+
 class PropertyController extends AbstractController
 {   
     /**
@@ -57,7 +58,7 @@ class PropertyController extends AbstractController
 
     # Méthode 
     /**
-     * @Route("/biens/{slug}-{id}",name="property.show", requirements={"slug": " [a-z0-9\-]*"})
+     * @Route("/biens/{slug}-{id}",name="property.show", requirements={"slug": "[a-z0-9\-]*"})
      * @param Property $property
      * @return Response
      */
