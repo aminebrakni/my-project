@@ -9,3 +9,6 @@
 # biens:
 #   path: /biens
 #   controller: App\Controller\PropertyController::index
+
+logout:
+  path: /logout
