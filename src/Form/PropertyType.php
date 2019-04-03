@@ -3,10 +3,12 @@
 namespace App\Form;
 
 use App\Entity\Property;
+use App\Entity\Option;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class PropertyType extends AbstractType
 {
@@ -38,6 +40,11 @@ class PropertyType extends AbstractType
                 'label' => 'Chauffage',
                 'choices' => $this->getChoices()
             ])
+            ->add('options',EntityType::class,[
+                'class' => Option::class,
+                'choice_label' => 'name',
+                'multiple' => true
+            ])
             ->add('city',null,[
                 'label' => 'Ville'
             ])
@@ -58,6 +65,7 @@ class PropertyType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Property::class,
+            'translation_domain' => 'forms'
         ]);
     }
 

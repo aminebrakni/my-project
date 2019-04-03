@@ -8,8 +8,10 @@ use Symfony\Component\HttpFoundation\Response;
 use App\Entity\Property;
 use App\Repository\PropertyRepository;
 use Doctrine\Common\Persistence\ObjectManager;
-
-
+use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Component\HttpFoundation\Request;
+use App\Entity\PropertySearch;
+use App\Form\PropertySearchType;
 
 class PropertyController extends AbstractController
 {   
@@ -35,7 +37,7 @@ class PropertyController extends AbstractController
      * @Route("/biens",name="property.index")
      * @return Response
      */
-    public function index(): Response{
+    public function index(PaginatorInterface $paginator, Request $request): Response{
 
         // permet de récupérer le bien qui a l'id 1 
         // $property = $this->repository->find(1);
@@ -51,8 +53,24 @@ class PropertyController extends AbstractController
 
         // équivalent du var_dump
         //dump($property);
+        
+        // formulaire de recherche
+        $search = new PropertySearch();
+        $form = $this->createForm(PropertySearchType::class, $search);
+        $form->handleRequest($request);
+
+        // Pagination
+        $properties = $paginator->paginate(
+            $this->repository->findAllVisibleQuery($search),
+            $request->query->getInt('page', 1), /*page number*/
+            12 /*limit per page*/
+        );
+
+        //$properties = $this->repository->findAllVisibleQuery();
         return $this->render('property/index.html.twig',[
-            'current_menu' => 'properties'
+            'current_menu' => 'properties',
+            'properties'   => $properties,
+            'form' => $form->createView()
         ]);
     }
 
