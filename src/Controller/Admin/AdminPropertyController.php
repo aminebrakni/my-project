@@ -91,12 +91,16 @@ class AdminPropertyController extends AbstractController
     */
     public function delete(Property $property, Request $request): Response
     {
-        if($this->isCsrfTokenValid('delete', $property->getId(), $request->get('_token'))){
-            $this->em->remove($property); 
-            $this->em->flush(); 
-            $this->addFlash('success','Supprimé avec succès');
-            // return new Response('Supppression');
-        }
+        $this->em->remove($property); 
+        $this->em->flush(); 
+        $this->addFlash('success','Supprimé avec succès');
+
+        // if($this->isCsrfTokenValid('delete', $property->getId(), $request->get('_token'))){
+        //     $this->em->remove($property); 
+        //     $this->em->flush(); 
+        //     $this->addFlash('success','Supprimé avec succès');
+        //     // return new Response('Supppression');
+        // }
         
         return $this->redirectToRoute('admin.property.index');
     }
